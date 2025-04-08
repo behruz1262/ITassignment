@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behruz's Assignment Portal | ID: 2417724</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-color: #4a6fa5;
+            --accent-hover: #5a8fd8;
+            --danger-color: #d32f2f;
+            --success-color: #388e3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info p {
+            margin: 0.2rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            border-right: 1px solid var(--bg-tertiary);
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .weeks-list {
+            list-style: none;
+        }
+
+        .weeks-list li {
+            padding: 0.5rem 0;
+            cursor: pointer;
+            border-bottom: 1px solid var(--bg-tertiary);
+            transition: all 0.2s;
+        }
+
+        .weeks-list li:hover {
+            color: var(--accent-color);
+            padding-left: 0.5rem;
+        }
+
+        .weeks-list li.active {
+            color: var(--accent-color);
+            font-weight: bold;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 0.5rem;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .current-week {
+            margin-bottom: 1.5rem;
+        }
+
+        .current-week h2 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent-color);
+            background-color: var(--bg-secondary);
+        }
+
+        .upload-area.active {
+            border-color: var(--accent-color);
+            background-color: var(--bg-secondary);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c62828;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #2e7d32;
+        }
+
+        .btn-view {
+            background-color: var(--bg-tertiary);
+        }
+
+        .btn-view:hover {
+            background-color: #3d3d3d;
+        }
+
+        .file-list {
+            flex: 1;
+            margin-top: 1rem;
+        }
+
+        .file-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .search-box {
+            background-color: var(--bg-tertiary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            color: var(--text-primary);
+            width: 250px;
+        }
+
+        .file-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .file-table th {
+            text-align: left;
+            padding: 0.75rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .file-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .file-table tr:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .file-icon {
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .add-link-form {
+            margin-top: 2rem;
+            background-color: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .add-link-form h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        .link-list {
+            margin-top: 1rem;
+        }
+
+        .link-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-item a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .link-item a:hover {
+            text-decoration: underline;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            background-color: var(--success-color);
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Preview Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow: auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+
+        .preview-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-body {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-body img {
+            max-width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+        }
+
+        .preview-body iframe {
+            width: 100%;
+            height: 60vh;
+            border: none;
+        }
+
+        .preview-body pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 4px;
+            max-height: 60vh;
+            overflow: auto;
+            width: 100%;
+        }
+
+        .download-btn {
+            margin-top: 1rem;
+            align-self: flex-end;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--bg-tertiary);
+            }
+
+            .weeks-list {
+                display: flex;
+                overflow-x: auto;
+                gap: 1rem;
+            }
+
+            .weeks-list li {
+                white-space: nowrap;
+                border-bottom: none;
+            }
+
+            .search-box {
+                width: 150px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Assignment Portal</div>
+        <div class="user-info">
+            <p>Yuldoshev Behruz</p>
+            <p>ID: 2417724 | Dong-A University</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>Weeks</h3>
+            <ul class="weeks-list">
+                <li class="active">Week 1</li>
+                <li>Week 2</li>
+                <li>Week 3</li>
+                <li>Week 4</li>
+                <li>Week 5</li>
+                <li>Week 6</li>
+                <li>Week 7</li>
+                <li>Week 8</li>
+                <li>Week 9</li>
+                <li>Week 10</li>
+                <li>Week 11</li>
+                <li>Week 12</li>
+                <li>Week 13</li>
+                <li>Week 14</li>
+                <li>Week 15</li>
+                <li>Week 16</li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="current-week">
+                <h2>Week 1</h2>
+                <p>Upload your assignments for this week</p>
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Drag & drop your files here or click to browse</p>
+                <input type="file" id="fileInput" style="display: none;" multiple>
+                <button class="btn" onclick="document.getElementById('fileInput').click()">Select Files</button>
+            </div>
+
+            <div class="file-list">
+                <div class="file-list-header">
+                    <h3>My Files</h3>
+                    <input type="text" class="search-box" placeholder="Search files..." id="searchInput">
+                </div>
+                <table class="file-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fileTableBody">
+                        <!-- Files will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="add-link-form">
+                <h3>Add External Link</h3>
+                <div class="form-group">
+                    <label for="linkName">Link Name</label>
+                    <input type="text" id="linkName" placeholder="e.g., Research Paper">
+                </div>
+                <div class="form-group">
+                    <label for="linkUrl">URL</label>
+                    <input type="url" id="linkUrl" placeholder="https://example.com">
+                </div>
+                <button class="btn btn-success" id="addLinkBtn">Add Link</button>
+                
+                <div class="link-list" id="linkList">
+                    <!-- Links will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="preview-container" id="previewContainer">
+                <div class="preview-header">
+                    <h3 id="previewFileName">File Preview</h3>
+                </div>
+                <div class="preview-body" id="previewBody">
+                    <!-- Preview content will be inserted here -->
+                </div>
+                <button class="btn download-btn" id="downloadBtn">Download File</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        File uploaded successfully!
+    </div>
+
+    <script>
+        // Sample data for demonstration
+        let files = [
+            { id: 1, name: 'Assignment1.pdf', type: 'PDF', size: '2.4 MB', uploaded: '2023-05-15', week: 1, content: 'data:application/pdf;base64,JVBERi0xLjMK...' },
+            { id: 2, name: 'Research.docx', type: 'Word', size: '1.1 MB', uploaded: '2023-05-16', week: 1, content: 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,UEsDBBQ...' },
+            { id: 3, name: 'Presentation.pptx', type: 'PowerPoint', size: '5.7 MB', uploaded: '2023-05-17', week: 1, content: 'data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64,UEsDBBQ...' },
+            { id: 4, name: 'Diagram.png', type: 'Image', size: '0.8 MB', uploaded: '2023-05-18', week: 1, content: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...' },
+            { id: 5, name: 'Notes.txt', type: 'Text', size: '0.1 MB', uploaded: '2023-05-19', week: 1, content: 'data:text/plain;base64,VGhpcyBpcyBhIHNhbXBsZSB0ZXh0IGZpbGUuCkhlcmUgYXJlIHNvbWUgbm90ZXMgZm9yIG15IGFzc2lnbm1lbnQu' }
+        ];
+
+        let links = [
+            { id: 1, name: 'Course Materials', url: 'https://elearning.donga.ac.kr', week: 1 },
+            { id: 2, name: 'Research Paper', url: 'https://arxiv.org', week: 1 }
+        ];
+
+        let currentWeek = 1;
+        let currentPreviewFile = null;
+
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileTableBody = document.getElementById('fileTableBody');
+        const searchInput = document.getElementById('searchInput');
+        const linkList = document.getElementById('linkList');
+        const addLinkBtn = document.getElementById('addLinkBtn');
+        const notification = document.getElementById('notification');
+        const weekItems = document.querySelectorAll('.weeks-list li');
+        const previewModal = document.getElementById('previewModal');
+        const closeModal = document.getElementById('closeModal');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewFileName = document.getElementById('previewFileName');
+        const previewBody = document.getElementById('previewBody');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // Initialize the app
+        function init() {
+            renderFiles();
+            renderLinks();
+            setupEventListeners();
+        }
+
+        // Render files for current week
+        function renderFiles() {
+            fileTableBody.innerHTML = '';
+            const filteredFiles = files.filter(file => file.week === currentWeek);
+            
+            if (filteredFiles.length === 0) {
+                fileTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No files uploaded yet</td></tr>';
+                return;
+            }
+
+            filteredFiles.forEach(file => {
+                const row = document.createElement('tr');
+                
+                let iconClass;
+                switch(file.type.toLowerCase()) {
+                    case 'pdf':
+                        iconClass = 'fas fa-file-pdf';
+                        break;
+                    case 'word':
+                        iconClass = 'fas fa-file-word';
+                        break;
+                    case 'powerpoint':
+                        iconClass = 'fas fa-file-powerpoint';
+                        break;
+                    case 'image':
+                        iconClass = 'fas fa-file-image';
+                        break;
+                    case 'text':
+                        iconClass = 'fas fa-file-alt';
+                        break;
+                    case 'video':
+                        iconClass = 'fas fa-file-video';
+                        break;
+                    case 'audio':
+                        iconClass = 'fas fa-file-audio';
+                        break;
+                    case 'zip':
+                        iconClass = 'fas fa-file-archive';
+                        break;
+                    case 'code':
+                        iconClass = 'fas fa-file-code';
+                        break;
+                    default:
+                        iconClass = 'fas fa-file';
+                }
+
+                row.innerHTML = `
+                    <td><i class="file-icon ${iconClass}"></i> ${file.name}</td>
+                    <td>${file.type}</td>
+                    <td>${file.size}</td>
+                    <td>${file.uploaded}</td>
+                    <td>
+                        <div class="file-actions">
+                            <button class="btn btn-view" onclick="viewFile(${file.id})">View</button>
+                            <button class="btn btn-danger" onclick="deleteFile(${file.id})">Delete</button>
+                        </div>
+                    </td>
+                `;
+                
+                fileTableBody.appendChild(row);
+            });
+        }
+
+        // Render links for current week
+        function renderLinks() {
+            linkList.innerHTML = '';
+            const filteredLinks = links.filter(link => link.week === currentWeek);
+            
+            if (filteredLinks.length === 0) {
+                linkList.innerHTML = '<p>No links added yet</p>';
+                return;
+            }
+
+            filteredLinks.forEach(link => {
+                const linkItem = document.createElement('div');
+                linkItem.className = 'link-item';
+                linkItem.innerHTML = `
+                    <a href="${link.url}" target="_blank">${link.name}</a>
+                    <button class="btn btn-danger" onclick="deleteLink(${link.id})">Delete</button>
+                `;
+                linkList.appendChild(linkItem);
+            });
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Drag and drop events
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('active');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('active');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('active');
+                handleFiles(e.dataTransfer.files);
+            });
+
+            // File input change
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    handleFiles(fileInput.files);
+                }
+            });
+
+            // Search functionality
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const rows = fileTableBody.querySelectorAll('tr');
+                
+                rows.forEach(row => {
+                    const fileName = row.querySelector('td').textContent.toLowerCase();
+                    if (fileName.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Add link button
+            addLinkBtn.addEventListener('click', () => {
+                const linkName = document.getElementById('linkName').value.trim();
+                const linkUrl = document.getElementById('linkUrl').value.trim();
+                
+                if (linkName && linkUrl) {
+                    const newLink = {
+                        id: links.length + 1,
+                        name: linkName,
+                        url: linkUrl.startsWith('http') ? linkUrl : `https://${linkUrl}`,
+                        week: currentWeek
+                    };
+                    
+                    links.push(newLink);
+                    renderLinks();
+                    
+                    // Clear inputs
+                    document.getElementById('linkName').value = '';
+                    document.getElementById('linkUrl').value = '';
+                    
+                    showNotification('Link added successfully!');
+                }
+            });
+
+            // Week selection
+            weekItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    // Update active week
+                    weekItems.forEach(week => week.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    // Update current week
+                    currentWeek = index + 1;
+                    document.querySelector('.current-week h2').textContent = `Week ${currentWeek}`;
+                    
+                    // Refresh files and links
+                    renderFiles();
+                    renderLinks();
+                });
+            });
+
+            // Modal close button
+            closeModal.addEventListener('click', () => {
+                previewModal.style.display = 'none';
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === previewModal) {
+                    previewModal.style.display = 'none';
+                }
+            });
+
+            // Download button
+            downloadBtn.addEventListener('click', () => {
+                if (currentPreviewFile) {
+                    const link = document.createElement('a');
+                    link.href = currentPreviewFile.content;
+                    link.download = currentPreviewFile.name;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
+        }
+
+        // Handle uploaded files
+        function handleFiles(selectedFiles) {
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                
+                // Read file content as base64
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Determine file type
+                    let fileType = 'Unknown';
+                    if (file.type) {
+                        const typeParts = file.type.split('/');
+                        fileType = typeParts[0].charAt(0).toUpperCase() + typeParts[0].slice(1);
+                        if (typeParts[0] === 'application') {
+                            if (file.type.includes('pdf')) fileType = 'PDF';
+                            else if (file.type.includes('word') || file.type.includes('msword') || file.type.includes('document')) fileType = 'Word';
+                            else if (file.type.includes('powerpoint') || file.type.includes('presentation')) fileType = 'PowerPoint';
+                            else if (file.type.includes('excel') || file.type.includes('spreadsheet')) fileType = 'Excel';
+                            else if (file.type.includes('zip') || file.type.includes('compressed')) fileType = 'Archive';
+                        }
+                    } else {
+                        const extension = file.name.split('.').pop().toLowerCase();
+                        if (['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'].includes(extension)) {
+                            fileType = extension.toUpperCase();
+                            if (fileType === 'DOC' || fileType === 'DOCX') fileType = 'Word';
+                            if (fileType === 'PPT' || fileType === 'PPTX') fileType = 'PowerPoint';
+                            if (fileType === 'XLS' || fileType === 'XLSX') fileType = 'Excel';
+                        } else if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+                            fileType = 'Image';
+                        } else if (['txt', 'csv', 'json', 'xml'].includes(extension)) {
+                            fileType = 'Text';
+                        }
+                    }
+                    
+                    // Format file size
+                    let fileSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+                    if (file.size < 1024 * 1024) {
+                        fileSize = (file.size / 1024).toFixed(1) + ' KB';
+                    }
+                    
+                    // Create new file object
+                    const newFile = {
+                        id: files.length + 1,
+                        name: file.name,
+                        type: fileType,
+                        size: fileSize,
+                        uploaded: new Date().toISOString().split('T')[0],
+                        week: currentWeek,
+                        content: e.target.result
+                    };
+                    
+                    files.push(newFile);
+                    renderFiles();
+                    showNotification(`${selectedFiles.length} file(s) uploaded successfully!`);
+                };
+                
+                if (file.type && file.type.startsWith('text/')) {
+                    reader.readAsDataURL(file);
+                } else {
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        // View a file
+        function viewFile(fileId) {
+            const file = files.find(f => f.id === fileId);
+            if (!file) return;
+            
+            currentPreviewFile = file;
+            previewFileName.textContent = file.name;
+            previewBody.innerHTML = '';
+            
+            // Create appropriate preview based on file type
+            if (file.type === 'PDF') {
+                const iframe = document.createElement('iframe');
+                iframe.src = file.content;
+                previewBody.appendChild(iframe);
+            } 
+            else if (file.type === 'Image') {
+                const img = document.createElement('img');
+                img.src = file.content;
+                previewBody.appendChild(img);
+            }
+            else if (file.type === 'Text') {
+                // Extract base64 content and decode
+                const base64Content = file.content.split(',')[1];
+                const textContent = atob(base64Content);
+                const pre = document.createElement('pre');
+                pre.textContent = textContent;
+                previewBody.appendChild(pre);
+            }
+            else {
+                // For unsupported types, show a message
+                const message = document.createElement('p');
+                message.textContent = 'Preview not available for this file type. Please download to view.';
+                previewBody.appendChild(message);
+            }
+            
+            previewModal.style.display = 'flex';
+        }
+
+        // Delete a file
+        function deleteFile(fileId) {
+            if (confirm('Are you sure you want to delete this file?')) {
+                files = files.filter(file => file.id !== fileId);
+                renderFiles();
+                showNotification('File deleted successfully!');
+            }
+        }
+
+        // Delete a link
+        function deleteLink(linkId) {
+            if (confirm('Are you sure you want to delete this link?')) {
+                links = links.filter(link => link.id !== linkId);
+                renderLinks();
+                showNotification('Link deleted successfully!');
+            }
+        }
+
+        // Show notification
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
